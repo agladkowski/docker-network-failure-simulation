@@ -2,10 +2,10 @@
 
 The aim of this project is to demonstrate how to simulate different types of network failure using docker.
 There is many tools that provide abstraction over basic linux tools like iptables and tc:
-- Pumba (http://blog.terranillius.com/post/pumba_docker_netem/)
-- Comcast (https://github.com/tylertreat/Comcast)
-- Blockade (https://github.com/worstcase/blockade)
-- Gremlins (https://github.com/qualimente/gremlins)
+* Pumba (http://blog.terranillius.com/post/pumba_docker_netem/)
+* Comcast (https://github.com/tylertreat/Comcast)
+* Blockade (https://github.com/worstcase/blockade)
+* Gremlins (https://github.com/qualimente/gremlins)
 
 The problem with those tools is that they are an abstraction and you don't really know how things work under the hood.
 
@@ -21,12 +21,12 @@ docker run -it --name test-server --cap-add NET_ADMIN --rm alpine sh -c "apk add
 ```
 
 Let's decipher some of the options
-_docker run -it_        - starts new docker container in interactive mode
-_--name test-server_    - defines name for newly started container
-_--cap-add NET_ADMIN_   - new container can manage network, important, it's needed by traffic shaping tool
-_--rm_                  - delete container on exit
-_alpine_                - it's the name of a lightweight linux container
-_sh -c "apk add --update iproute2 && ping www.wp.pl"_ - this is the command that will be executed when the container starts up. It installs iproute2 tools and runs ping command. 
+* _docker run -it_        - starts new docker container in interactive mode
+* _--name test-server_    - defines name for newly started container
+* _--cap-add NET_ADMIN_   - new container can manage network, important, it's needed by traffic shaping tool
+* _--rm_                  - delete container on exit
+* _alpine_                - it's the name of a lightweight linux container
+* _sh -c "apk add --update iproute2 && ping www.wp.pl"_ - this is the command that will be executed when the container starts up. It installs iproute2 tools and runs ping command. 
 
 Here is expected output:
 ```
