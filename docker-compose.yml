@@ -1,0 +1,30 @@
+# delete all containser
+# docker rm $(docker ps -a -q)
+# delete all images
+# docker rmi $(docker images -q)
+# in case of not found image clear the cache
+# docker-compose ps
+# docker-compose rm --all
+# image basic (FROM alpine \n CMD ["ping", "localhost"]
+# http://blog.terranillius.com/post/pumba_docker_netem/
+# docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock gaiaadm/pumba pumba netem --interface eth0 --duration 1m delay --time 3000 tryme
+version: '3'
+services:
+  test-server:
+    image: alpine
+    container_name: test-server
+    command: sh -c "apk add --update iproute2 && ping www.wp.pl"
+    #command: sh -c "apk add --update iperf && iperf -s -u -i 1"
+    cap_add:
+      - NET_ADMIN
+
+#  failure-simulator:
+#    image: gaiaadm/pumba
+#    container_name: failure-simulator
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#    command: sh -c "pumba netem --interface eth0 --duration 1m delay --time 1000 --jitter 1000  test-server"
+    #command: sh -c "pumba netem --interface eth0 --duration 1m loss --percent 50 test-server test-client"
+    #command: sh -c "pumba netem --interface eth0 --duration 1m loss-gemodel --pg 5 --pb 90 --one-h 85 --one-k 7 test-server test-client"
+    #command: sh -c "pumba netem --interface eth0 --duration 1m loss-state -p13 15 -p31 85 test-server test-client"
+
