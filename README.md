@@ -89,7 +89,7 @@ Here is the test-server console output after setting delay back to 0ms
 64 bytes from 212.77.98.9: seq=24 ttl=37 time=0.652 ms
 ```
 
-## How start new container and add delay in Java
+## Java - Docker Client 
 
 Reference: https://github.com/spotify/docker-client
 
