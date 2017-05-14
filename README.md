@@ -65,7 +65,7 @@ Here is the test-server console output
 64 bytes from 212.77.98.9: seq=14 ttl=37 time=100.896 ms
 ```
 
-### Add delay of 1000ms (use separate terminal for that)
+### Add delay of 100ms (use separate terminal for that)
 ```
 docker exec -it test-server sh -c "tc qdisc add dev eth0 root netem delay 100ms"
 ```
@@ -84,7 +84,7 @@ Here is the test-server console output after setting delay back to 0ms
 64 bytes from 212.77.98.9: seq=19 ttl=37 time=100.699 ms
 64 bytes from 212.77.98.9: seq=20 ttl=37 time=100.523 ms
 64 bytes from 212.77.98.9: seq=21 ttl=37 time=100.494 ms
-64 bytes from 212.77.98.9: seq=22 ttl=37 time=0.661 ms
+64 bytes from 212.77.98.9: seq=22 ttl=37 time=0.661 ms <-- Delay is removed
 64 bytes from 212.77.98.9: seq=23 ttl=37 time=0.665 ms
 64 bytes from 212.77.98.9: seq=24 ttl=37 time=0.652 ms
 ```
