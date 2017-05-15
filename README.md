@@ -65,9 +65,9 @@ Here is the test-server console output
 64 bytes from 212.77.98.9: seq=14 ttl=37 time=100.896 ms
 ```
 
-### Add delay of 100ms (use separate terminal for that)
+### Change delay back to 0ms
 ```
-docker exec -it test-server sh -c "tc qdisc add dev eth0 root netem delay 100ms"
+docker exec -it test-server sh -c "tc qdisc change dev eth0 root netem delay 0ms"
 ```
 
 Here is the test-server console output after setting delay back to 0ms
@@ -97,4 +97,4 @@ Reference: https://github.com/spotify/docker-client
 
 The above class demonstrates how the same delay can be applied using java. 
 This may be useful if you want to start your environment with docker-compose and then apply 
-different types of network failures to test resilience of your microservices.
+different types of network failures to test resilience of your micro-services.
