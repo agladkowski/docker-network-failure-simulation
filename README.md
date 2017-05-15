@@ -98,3 +98,6 @@ Reference: https://github.com/spotify/docker-client
 The above class demonstrates how the same delay can be applied using java. 
 This may be useful if you want to start your environment with docker-compose and then apply 
 different types of network failures to test resilience of your micro-services.
+
+## Useful articles
+* https://www.qualimente.com/2016/04/26/introduction-to-failure-testing-with-docker/
