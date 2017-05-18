@@ -9,7 +9,29 @@ There is many tools that provide abstraction over basic linux tools like iptable
 
 The problem with those tools is that they are an abstraction and you don't really know how things work under the hood.
 
-I believe in the power of simple one liners, demonstrating the concept of  
+I believe in the power of simple one-liners, demonstrating the concept of failure injection.
+
+## Why failure testing?
+Traditional unit/integration/functional/load testing is performed under ideal environmental conditions.
+
+As the micro-services architecture gains more popularity, it is crucial to test including host, network and application software failures.
+
+Examples:
+* Network delay (e.g. caused by peaks in activity)
+* Dropped packets
+* Corrupted packets
+* GC pauses
+* CPU saturation
+* Virtual machine reboots
+
+## Why failure testing is difficult?
+...
+
+## How to do Failure testing
+
+Container technology and Docker, opened the way to setup the whole environment (docker-compose) and manipulate it's components in a fully controlled and repeatable way.
+
+Fault-injection process can be codified and resource-efficient. We don’t need to overload a database to see if the application uses timeouts or backpressure properly.
 
 ## Delay Simulation
 
