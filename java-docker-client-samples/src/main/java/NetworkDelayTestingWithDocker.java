@@ -7,9 +7,6 @@ import com.spotify.docker.client.messages.*;
 
 import java.util.List;
 
-/**
- * Created by andrzej on 2017-05-13.
- */
 public class NetworkDelayTestingWithDocker {
 
     public static final String CONTAINER_ID = "test-server";

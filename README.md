@@ -2,6 +2,7 @@
 
 The aim of this project is to demonstrate how to simulate different types of network failure using docker.
 There is many tools that provide abstraction over basic linux tools like iptables and tc:
+* Chaos Monkey https://github.com/Netflix/chaosmonkey
 * Pumba (http://blog.terranillius.com/post/pumba_docker_netem/)
 * Comcast (https://github.com/tylertreat/Comcast)
 * Blockade (https://github.com/worstcase/blockade)
@@ -115,7 +116,7 @@ Here is the test-server console output after setting delay back to 0ms
 
 Reference: https://github.com/spotify/docker-client
 
-### Sample java code NetworkDelayTestingWithDocker.java 
+### Sample java code java-docker-client-samples/src/main/java/NetworkDelayTestingWithDocker.java 
 
 The above class demonstrates how the same delay can be applied using java. 
 This may be useful if you want to start your environment with docker-compose and then apply 
