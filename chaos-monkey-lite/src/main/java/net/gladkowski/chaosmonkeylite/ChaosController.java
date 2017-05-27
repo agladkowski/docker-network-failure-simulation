@@ -68,14 +68,17 @@ public class ChaosController {
 
     @RequestMapping(value = "/stop/{id}", method = RequestMethod.GET)
     public ModelAndView stopContainer(@PathVariable("id") String id) {
-        StringBuilder operation = new StringBuilder()
-                .append(Instant.now().toString())
-                .append(" # Stopping container ")
-                .append("\n").append("docker stop ")
-                .append(" ")
-                .append(id)
-                .append("\n");
+        StringBuilder operation = new StringBuilder();
         try {
+            operation.append(Instant.now().toString())
+                    .append(" # Stopping container ")
+                    .append(docker.inspectContainer(id).name())
+                    .append("\n")
+                    .append("docker stop ")
+                    .append(" ")
+                    .append(id)
+                    .append("\n");
+
             docker.stopContainer(id, 2);
         } catch (Exception e) {
             log.error("Error stopping container " + id, e);
@@ -93,16 +96,18 @@ public class ChaosController {
     }
 
     private ModelAndView execute(ThrowableConsumer<String> consumer, String containerId, String dockerCommand, String description) {
-        StringBuilder operation = new StringBuilder()
-                .append(Instant.now().toString())
-                .append(" ")
-                .append(description)
-                .append("\n")
-                .append(dockerCommand)
-                .append(" ")
-                .append(containerId)
-                .append("\n");
+        StringBuilder operation = new StringBuilder();
         try {
+            operation.append(Instant.now().toString())
+                    .append(" ")
+                    .append(description)
+                    .append(" ")
+                    .append(docker.inspectContainer(containerId).name())
+                    .append("\n")
+                    .append(dockerCommand)
+                    .append(" ")
+                    .append(containerId)
+                    .append("\n");
             consumer.accept(containerId);
         } catch (Exception e) {
             log.error("Error pausing container " + containerId, e);
