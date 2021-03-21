@@ -2,9 +2,11 @@ package net.gladkowski.chaosmonkeylite;
 
 import com.spotify.docker.client.DefaultDockerClient;
 import com.spotify.docker.client.DockerClient;
+import com.spotify.docker.client.LogStream;
 import com.spotify.docker.client.exceptions.DockerCertificateException;
 import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.Container;
+import com.spotify.docker.client.messages.ExecCreation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,15 +16,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Controller
 public class ChaosController {
     final DockerClient docker;
     final List<String> performedOperations = new ArrayList<>();
+    final Map<String, String> installedTooling = new HashMap<>();
+    final Map<String, String> injectedDelays = new HashMap<>();
 
     public ChaosController() throws DockerCertificateException {
         this.docker =  DefaultDockerClient.fromEnv().build();
@@ -88,11 +90,53 @@ public class ChaosController {
         return new ModelAndView("redirect:/");
     }
 
+
+    @RequestMapping(value = "/delay/{id}/{delayMs}", method = RequestMethod.GET)
+    public ModelAndView delayContainer(@PathVariable("id") String id, @PathVariable("delayMs") String delayMs) {
+
+        if (!installedTooling.containsKey(id)) {
+            executeCmd(id, "apk add --update iproute2", "# Installing tc tool");
+            installedTooling.put(id, "iproute2");
+        }
+
+        if (!injectedDelays.containsKey(id)) {
+            injectedDelays.put(id, delayMs);
+            return executeCmd(id, "tc qdisc add dev eth0 root netem delay " + delayMs + "ms", "# Setting network delay to " + delayMs + "ms");
+        }
+
+        injectedDelays.put(id, delayMs);
+        return executeCmd(id, "tc qdisc change dev eth0 root netem delay " + delayMs + "ms", "# Updating network delay to " + delayMs + "ms");
+    }
+
     // ====================================
 
     @FunctionalInterface
     interface ThrowableConsumer<T> {
         void accept(T argument) throws Exception;
+    }
+
+
+    private ModelAndView executeCmd(final String containerId, String cmd, final String description) {
+        final StringBuilder operation = new StringBuilder();
+        try {
+            final String[] command = {"sh", "-c", cmd};
+            final ExecCreation execCreation = docker.execCreate(
+                    containerId, command, DockerClient.ExecCreateParam.attachStdout(),
+                    DockerClient.ExecCreateParam.attachStderr());
+            final LogStream output = docker.execStart(execCreation.id());
+            final String execOutput = output.readFully();
+
+            operation.append(Instant.now().toString())
+                    .append(" ").append(description)
+                    .append(" Container: ").append(docker.inspectContainer(containerId).name())
+                    .append("\nCMD: ").append(cmd)
+                    .append("\n").append(execOutput);
+        } catch (Exception e) {
+            log.error("Error executing cmd=" + cmd + " on containerId=" + containerId, e);
+        }
+
+        performedOperations.add(operation.toString());
+        return new ModelAndView("redirect:/");
     }
 
     private ModelAndView execute(ThrowableConsumer<String> consumer, String containerId, String dockerCommand, String description) {
@@ -110,7 +154,7 @@ public class ChaosController {
                     .append("\n");
             consumer.accept(containerId);
         } catch (Exception e) {
-            log.error("Error pausing container " + containerId, e);
+            log.error("Error executing " + dockerCommand + " on containerId=" + containerId, e);
             operation.append("\n").append(e.getMessage());
         }
         performedOperations.add(operation.toString());

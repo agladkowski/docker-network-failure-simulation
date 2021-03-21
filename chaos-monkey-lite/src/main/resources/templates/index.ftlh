@@ -48,9 +48,9 @@ No containers to display. Is docker demon running?
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a href="/start/${container.id()}">Delay</a></li>
-                        <li><a href="/start/${container.id()}">Drop packets</a></li>
-                        <li><a href="/start/${container.id()}">Corrupt packets</a></li>
+                        <li><a href="/delay/${container.id()}/100">Delay</a></li>
+                        <li><a href="/drop/${container.id()}">Drop packets</a></li>
+                        <li><a href="/corrupt/${container.id()}">Corrupt packets</a></li>
                         <#--<li role="separator" class="divider"></li>-->
                         <#--<li><a href="#">Separated link</a></li>-->
                     </ul>
