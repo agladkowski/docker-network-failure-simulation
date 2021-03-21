@@ -42,18 +42,17 @@ No containers to display. Is docker demon running?
 
             </td>
             <td>
+                <!-- https://getbootstrap.com/docs/4.6/components/dropdowns/ -->
                 <div class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Network operations
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a href="/delay/${container.id()}/100">Delay</a></li>
-                        <li><a href="/drop/${container.id()}">Drop packets</a></li>
-                        <li><a href="/corrupt/${container.id()}">Corrupt packets</a></li>
-                        <#--<li role="separator" class="divider"></li>-->
-                        <#--<li><a href="#">Separated link</a></li>-->
-                    </ul>
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="/delay/${container.id()}/100">Delay packets</a>
+                        <a class="dropdown-item" href="/delay/${container.id()}/100">Drop packets</a>
+                        <a class="dropdown-item" href="/delay/${container.id()}/100">Corrupt packets</a>
+                    </div>
                 </div>
             </td>
         </tr>
@@ -63,12 +62,18 @@ No containers to display. Is docker demon running?
 
 <#if operations?size == 0>
 <#else>
-<h3>Operations</h3>
-<pre>
+<div class="card">
+    <div class="card-header">
+        Operations
+    </div>
+    <div class="card-body">
+        <pre>
 <#list operations?reverse as operation>
 ${operation}
 </#list>
-</pre>
+        </pre>
+    </div>
+</div>
 </#if>
 
 
