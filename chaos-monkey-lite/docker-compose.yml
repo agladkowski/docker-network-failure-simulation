@@ -1,0 +1,34 @@
+#
+# Example of how to run chaos-monkey with other alpine-based containers
+# Please ensure all your containers have NET_ADMIN capability added,
+# otherwise any traffic shaping commands are ignored silently!
+#
+version: "3.7"
+
+services:
+
+  #
+  # Sample container, continuously sends ping to google.com.
+  # The output prints ping delay in milliseconds, this makes it ideal for testing network delays.
+  #
+  ping-google:
+    image: "alpine"
+    container_name: ping-google
+    # IMPORTANT - all your containers should have this option enabled!
+    cap_add:
+      - NET_ADMIN
+    entrypoint: [sh, -c, "apk add --update iproute2 && ping gooogle.com"]
+
+  #
+  # Chaos-monkey webapp, http://localhost:8080
+  #
+  chaos-monkey:
+    image: network-chaos-monkey
+    container_name: chaos-monkey
+    ports:
+    - "8080:8080"
+
+    # IMPORTANT - chaos monkey needs to access docker-demon to see all the containers
+    # and execute network traffic shaping commands!
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
