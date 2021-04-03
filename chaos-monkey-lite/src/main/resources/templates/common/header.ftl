@@ -20,7 +20,7 @@
 <nav class="navbar navbar-dark bg-dark">
     <ul class="nav navbar-nav">
         <li class="nav-item <#if request.getRequestUri() == "/">active</#if>">
-            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/">Network Chaos Monkey</a>
         </li>
     </ul>
 </nav>

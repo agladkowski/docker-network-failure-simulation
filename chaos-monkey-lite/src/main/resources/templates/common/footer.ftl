@@ -9,9 +9,7 @@
 </#if>
 
 <#if executeOnLoad??>
-<script language="javascript">
-    <@executeOnLoad/>
-</script>
+<@executeOnLoad/>
 </#if>
 
 
