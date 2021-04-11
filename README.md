@@ -3,7 +3,7 @@
 The aim of this project is to demonstrate how to simulate different types of network failure using docker.
 There is many tools that provide abstraction over basic linux tools like iptables and tc:
 * Chaos Monkey https://github.com/Netflix/chaosmonkey
-* Pumba (http://blog.terranillius.com/post/pumba_docker_netem/)
+* Pumba (https://github.com/alexei-led/pumba)
 * Comcast (https://github.com/tylertreat/Comcast)
 * Blockade (https://github.com/worstcase/blockade)
 * Gremlins (https://github.com/qualimente/gremlins)
