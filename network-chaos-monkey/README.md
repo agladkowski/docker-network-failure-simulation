@@ -1,3 +1,5 @@
+![image](https://user-images.githubusercontent.com/1870012/114316276-c0147600-9afa-11eb-8624-53d52b45fad6.png)
+
 # Network chaos monkey
 
 The main purpose of this project is to ease the process of network failure simulation, failure being:
