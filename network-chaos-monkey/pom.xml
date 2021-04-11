@@ -5,14 +5,14 @@
 
 	<parent>
 		<groupId>net.gladkowski</groupId>
-		<artifactId>parent-pom</artifactId>
+		<artifactId>network-failure-simulation</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>chaos-monkey-lite</artifactId>
+	<artifactId>network-chaos-monkey</artifactId>
 	<packaging>jar</packaging>
 
-	<name>chaos-monkey-lite</name>
+	<name>network-chaos-monkey</name>
 	<description>Spring boot app for simulating chaos among co-deployed docker containers.</description>
 
 	<properties>

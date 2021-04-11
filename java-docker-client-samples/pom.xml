@@ -4,14 +4,14 @@
 
     <parent>
         <groupId>net.gladkowski</groupId>
-        <artifactId>parent-pom</artifactId>
+        <artifactId>network-failure-simulation</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>java-docker-client-samples</artifactId>
     <packaging>jar</packaging>
 
-    <name>Java docker client sample code</name>
+    <name>java-docker-client-samples</name>
     <url>http://maven.apache.org</url>
 
     <dependencies>

@@ -10,9 +10,9 @@ No containers to display. Is docker demon running?
         <th>Status</th>
         <th>Name</th>
         <th>Actions</th>
-        <th>Delay Packets</th>
-        <th>Drop Packets</th>
-        <th>Corrupt Packets</th>
+        <th>Network Delay</th>
+        <th>Network Loss</th>
+        <th>Network Corrupt</th>
     </tr>
     <#list containers as container>
         <tr>
@@ -63,15 +63,35 @@ No containers to display. Is docker demon running?
             </td>
             <td>
                 <#if container.status()?contains("Up")>
-                     <select class="custom-select" id="drop_${container.id()}">
-                        <option value="#" <#if delay == 0>selected</#if>>TODO</option>
-                     </select>
+                    <#if losses[container.id()]??>
+                        <#assign loss = losses[container.id()]>
+                    <#else>
+                        <#assign loss = 0>
+                    </#if>
+                    <select class="custom-select" id="loss_${container.id()}">
+                        <option value="/loss/${container.id()}/0" <#if loss == 0>selected</#if>>0%</option>
+                        <option value="/loss/${container.id()}/0.1" <#if loss == 0.1>selected</#if>>0.1%</option>
+                        <option value="/loss/${container.id()}/1" <#if loss == 1>selected</#if>>1%</option>
+                        <option value="/loss/${container.id()}/5" <#if loss == 5>selected</#if>>5%</option>
+                        <option value="/loss/${container.id()}/10" <#if loss == 10>selected</#if>>10%</option>
+                        <option value="/loss/${container.id()}/20" <#if loss == 20>selected</#if>>20%</option>
+                    </select>
                 </#if>
             </td>
             <td>
                 <#if container.status()?contains("Up")>
+                    <#if corruptions[container.id()]??>
+                        <#assign corrupt = corruptions[container.id()]>
+                    <#else>
+                        <#assign corrupt = 0>
+                    </#if>
                     <select class="custom-select" id="corrupt_${container.id()}">
-                        <option value="#" <#if delay == 0>selected</#if>>TODO</option>
+                        <option value="/corrupt/${container.id()}/0"   <#if corrupt == 0>selected</#if>>0%</option>
+                        <option value="/corrupt/${container.id()}/0.1" <#if corrupt == 0.1>selected</#if>>0.1%</option>
+                        <option value="/corrupt/${container.id()}/1"   <#if corrupt == 1>selected</#if>>1%</option>
+                        <option value="/corrupt/${container.id()}/5"   <#if corrupt == 5>selected</#if>>5%</option>
+                        <option value="/corrupt/${container.id()}/10"  <#if corrupt == 10>selected</#if>>10%</option>
+                        <option value="/corrupt/${container.id()}/20"  <#if corrupt == 20>selected</#if>>20%</option>
                     </select>
                 </#if>
             </td>
@@ -101,10 +121,7 @@ ${operation}
 <script language="JavaScript" >
     $('select').on('change', function() {
         //alert( this.id + '=' + this.value );
-        if (this.id.startsWith("delay_"))
-        {
-            window.location.replace(this.value);
-        }
+        window.location.replace(this.value);
     });
 </script>
 

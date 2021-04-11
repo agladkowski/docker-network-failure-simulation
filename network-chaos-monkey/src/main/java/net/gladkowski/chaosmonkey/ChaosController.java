@@ -1,4 +1,4 @@
-package net.gladkowski.chaosmonkeylite;
+package net.gladkowski.chaosmonkey;
 
 import com.spotify.docker.client.DefaultDockerClient;
 import com.spotify.docker.client.DockerClient;
@@ -25,6 +25,8 @@ public class ChaosController {
     private final List<String> performedOperations = new ArrayList<>();
     private final Map<String, String> installedTooling = new HashMap<>();
     private final Map<String, Integer> delays = new HashMap<>();
+    private final Map<String, Double> losses = new HashMap<>();
+    private final Map<String, Double> corruptions = new HashMap<>();
 
     public ChaosController() throws DockerCertificateException {
         if (SystemUtils.IS_OS_WINDOWS) {
@@ -40,6 +42,8 @@ public class ChaosController {
     public ModelAndView index() {
         final ModelAndView mv = new ModelAndView("index");
         mv.addObject("delays", delays);
+        mv.addObject("losses", losses);
+        mv.addObject("corruptions", corruptions);
         try {
             final List<Container> containers = docker.listContainers(DockerClient.ListContainersParam.allContainers());
             //performedOperations.add(Instant.now().toString() + " # Listing all the containers\ndocker ps\n");
@@ -101,7 +105,7 @@ public class ChaosController {
 
 
     @RequestMapping(value = "/delay/{id}/{delayMs}", method = RequestMethod.GET)
-    public ModelAndView delayContainer(@PathVariable("id") String id, @PathVariable("delayMs") String delayMs) {
+    public ModelAndView delayPackets(@PathVariable("id") String id, @PathVariable("delayMs") String delayMs) {
 
         if (!installedTooling.containsKey(id)) {
             executeCmd(id, "apk add --update iproute2", "# Installing tc tool");
@@ -115,6 +119,39 @@ public class ChaosController {
 
         delays.put(id, Integer.parseInt(delayMs));
         return executeCmd(id, "tc qdisc change dev eth0 root netem delay " + delayMs + "ms", "# Updating network delay to " + delayMs + "ms");
+    }
+
+    @RequestMapping(value = "/loss/{id}/{value}", method = RequestMethod.GET)
+    public ModelAndView lossPackets(@PathVariable("id") String id, @PathVariable("value") String value) {
+
+        return managePackets(id, value, losses, "loss", "%");
+    }
+
+    @RequestMapping(value = "/corrupt/{id}/{value}", method = RequestMethod.GET)
+    public ModelAndView corruptPackets(@PathVariable("id") String id, @PathVariable("value") String value) {
+
+        return managePackets(id, value, corruptions, "corrupt", "%");
+    }
+
+    private ModelAndView managePackets(String id,
+                                       String corruptionValue,
+                                       Map<String, Double> corruptionTypeMap,
+                                       String corruptionType,
+                                       String corruptionUnit) {
+        if (!installedTooling.containsKey(id)) {
+            executeCmd(id, "apk add --update iproute2", "# Installing tc tool");
+            installedTooling.put(id, "iproute2");
+        }
+
+        if (!corruptionTypeMap.containsKey(id)) {
+            corruptionTypeMap.put(id, Double.parseDouble(corruptionValue));
+            return executeCmd(id, "tc qdisc add dev eth0 root netem " + corruptionType + " " + corruptionValue + corruptionUnit,
+                    "# Setting network " + corruptionType + " to " + corruptionValue + corruptionUnit);
+        }
+
+        corruptionTypeMap.put(id, Double.parseDouble(corruptionValue));
+        return executeCmd(id, "tc qdisc change dev eth0 root netem " + corruptionType + " " + corruptionValue + corruptionUnit,
+                "# Updating network " + corruptionType + " to " + corruptionValue + corruptionUnit);
     }
 
     // ====================================
