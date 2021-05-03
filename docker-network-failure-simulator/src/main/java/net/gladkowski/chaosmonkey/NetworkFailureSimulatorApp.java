@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ChaosMonkeyLiteApp {
+public class NetworkFailureSimulatorApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ChaosMonkeyLiteApp.class, args);
+		SpringApplication.run(NetworkFailureSimulatorApp.class, args);
 	}
 }

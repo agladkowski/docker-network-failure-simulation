@@ -20,7 +20,7 @@ import java.util.*;
 
 @Slf4j
 @Controller
-public class ChaosController {
+public class NetworkFailureController {
     private final DockerClient docker;
     private final List<String> performedOperations = new ArrayList<>();
     private final Map<String, String> installedTooling = new HashMap<>();
@@ -28,7 +28,7 @@ public class ChaosController {
     private final Map<String, Double> losses = new HashMap<>();
     private final Map<String, Double> corruptions = new HashMap<>();
 
-    public ChaosController() throws DockerCertificateException {
+    public NetworkFailureController() throws DockerCertificateException {
         if (SystemUtils.IS_OS_WINDOWS) {
             log.info("Running on Windows OS");
             this.docker =  DefaultDockerClient.fromEnv().build();

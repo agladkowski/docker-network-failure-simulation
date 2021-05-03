@@ -12,7 +12,7 @@
 
     <groupId>net.gladkowski</groupId>
     <artifactId>network-failure-simulation</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1</version>
     <packaging>pom</packaging>
     <name>network-failure-simulation</name>
     <description>Network Failure Simulation - parent pom</description>
@@ -23,7 +23,7 @@
     </properties>
 
 	<modules>
-		<module>network-chaos-monkey</module>
+		<module>docker-network-failure-simulator</module>
 		<module>java-docker-client-samples</module>
 	</modules>
 </project>

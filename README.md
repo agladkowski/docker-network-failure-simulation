@@ -1,4 +1,9 @@
-# Network Failure/Chaos testing with docker
+# Network failure simulator
+Maven Module: [docker-network-failure-simulator](/docker-network-failure-simulator)
+
+Docker Hub: [docker-network-failure-simulator](https://hub.docker.com/repository/docker/agladkowski/docker-network-failure-simulator)
+
+# Network Failure testing with docker
 
 The aim of this project is to demonstrate how to simulate different types of network failure using docker.
 There is many tools that provide abstraction over basic linux tools like iptables and tc:

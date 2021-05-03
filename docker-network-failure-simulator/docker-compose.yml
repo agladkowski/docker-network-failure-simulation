@@ -1,5 +1,5 @@
 #
-# Example of how to run chaos-monkey with other alpine-based containers
+# Example of how to run network-failure-simulator with other alpine-based containers
 # Please ensure all your containers have NET_ADMIN capability added,
 # otherwise any traffic shaping commands are ignored silently!
 #
@@ -20,15 +20,15 @@ services:
     entrypoint: [sh, -c, "apk add --update iproute2 && ping gooogle.com"]
 
   #
-  # Chaos-monkey webapp, http://localhost:8080
+  # Webapp/UI - http://localhost:8080
   #
-  chaos-monkey:
-    image: network-chaos-monkey
-    container_name: chaos-monkey
+  docker-network-failure-simulator:
+    image: agladkowski/docker-network-failure-simulator
+    container_name: docker-network-failure-simulator
     ports:
     - "8080:8080"
 
-    # IMPORTANT - chaos monkey needs to access docker-demon to see all the containers
+    # IMPORTANT - network failure simulator needs to access docker-demon to see all the containers
     # and execute network traffic shaping commands!
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"

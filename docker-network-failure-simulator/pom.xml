@@ -6,13 +6,13 @@
 	<parent>
 		<groupId>net.gladkowski</groupId>
 		<artifactId>network-failure-simulation</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.1</version>
 	</parent>
 
-	<artifactId>network-chaos-monkey</artifactId>
+	<artifactId>docker-network-failure-simulator</artifactId>
 	<packaging>jar</packaging>
 
-	<name>network-chaos-monkey</name>
+	<name>docker-network-failure-simulator</name>
 	<description>Spring boot app for simulating chaos among co-deployed docker containers.</description>
 
 	<properties>
@@ -81,7 +81,11 @@
 						<image>openjdk:12-alpine</image>
 					</from>
 					<to>
-						<image>network-chaos-monkey</image>
+						<image>agladkowski/docker-network-failure-simulator</image>
+						<tags>
+							<tag>latest</tag>
+							<tag>${project.version}</tag>
+						</tags>
 					</to>
 				</configuration>
 			</plugin>
